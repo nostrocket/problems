@@ -19,7 +19,7 @@ const config = {
 			crawl: true
 		},
 		paths: {
-			base: dev ? '' : ''
+			base: dev ? '' : '/problems'
 		},
 		alias: {
 			'@/*': './src/lib/*',

@@ -21,6 +21,12 @@
 
 	problems = $ndk.storeSubscribe([{ kinds: [31971 as number] }], { subId: 'rockets' });
 
+	function printList(e: NDKEvent[]) {
+		for (let _e of e) {
+			console.log(_e.rawEvent());
+		}
+	}
+
 	let tldr: string = '';
 	let para: string = '';
 	let child_status: 'rfm' | 'open' = 'rfm';
@@ -129,7 +135,7 @@
 					</Dialog.Content>
 				</Dialog.Root>
 				{#if $problems && $devmode}
-					<Button variant="outline" on:click={() => console.log($problems)}>
+					<Button variant="outline" on:click={() => printList($problems)}>
 						Print Problems to Console
 					</Button>
 				{/if}
