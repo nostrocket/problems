@@ -12,7 +12,7 @@
 	import TextareaField from '../../components/TextareaField.svelte';
 	import { onDestroy } from 'svelte';
 	import type { NDKEventStore } from '@nostr-dev-kit/ndk-svelte';
-	import { generateRandomHex } from '@/utils';
+	import { sha256 } from 'js-sha256';
 
 	let problems: NDKEventStore<NDKEvent> | undefined;
 	onDestroy(() => {
@@ -64,9 +64,11 @@
 		}
 
 		let e = new NDKEvent(ndk);
+		const identify = sha256(author.pubkey + tldr);
+		console.log('identify', identify);
 		e.author = author;
 		e.kind = 31971;
-		e.tags.push(['d', generateRandomHex(32)]);
+		e.tags.push(['d', identify]);
 		e.tags.push(['tldr', tldr]);
 		e.tags.push(['para', para]);
 		e.tags.push(['child_status', child_status]);
