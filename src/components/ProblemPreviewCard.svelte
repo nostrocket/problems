@@ -5,10 +5,12 @@
 	import { Avatar, Name } from '@nostr-dev-kit/ndk-svelte-components';
 	import ProfileCard from './ProfileCard.svelte';
 	import type { Problem } from '@/event_helpers/problems';
+	import { devmode } from '@/stores/session';
+	import { Button } from '@/components/ui/button';
 	export let problem: Problem;
 </script>
 
-<Card.Root class="overflow-hidden rounded-lg bg-white shadow-md">
+<Card.Root class="overflow-hidden rounded-lg bg-white shadow-md dark:bg-slate-800">
 	<Card.Content class="p-6">
 		<div class="mb-2 text-lg font-semibold">{problem.tldr}</div>
 		<HoverCard.Root>
@@ -33,6 +35,12 @@
 			</HoverCard.Content>
 		</HoverCard.Root>
 
-		<div class="text-gray-700">{problem.para}</div>
+		<div class="text-gray-700 dark:text-white">{problem.para}</div>
 	</Card.Content>
+	{#if $devmode}
+		<Card.Footer
+			><Button on:click={() => console.log(problem.event.rawEvent())}>Print to console</Button
+			></Card.Footer
+		>
+	{/if}
 </Card.Root>

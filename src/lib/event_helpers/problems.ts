@@ -1,7 +1,7 @@
 import { NDKEvent } from '@nostr-dev-kit/ndk';
 
 export class Problem {
-	private readonly event: NDKEvent;
+	public readonly event: NDKEvent;
 
 	constructor(
 		event: NDKEvent,
