@@ -11,6 +11,7 @@
 	import { Badge } from '@/components/ui/badge';
 	import { bitcoinTip } from '@/stores/bitcoin';
 	import { AngleLeftSolid, AngleRightSolid } from 'svelte-awesome-icons';
+	import LogNewProblem from '../components/LogNewProblem.svelte';
 
 	let open = false;
 	let expandSidebar = true;
@@ -85,7 +86,8 @@
 					</nav>
 				</Sheet.Content>
 			</Sheet.Root>
-			<div class="w-full flex-1 shrink">
+			<div class="flex w-full shrink justify-between">
+				<LogNewProblem />
 				<Badge class="flex h-8 max-w-16 shrink-0 items-center justify-center rounded-sm"
 					>{$bitcoinTip.height}</Badge
 				>
