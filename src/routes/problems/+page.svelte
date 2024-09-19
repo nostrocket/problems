@@ -13,7 +13,6 @@
 	import { onDestroy } from 'svelte';
 	import type { NDKEventStore } from '@nostr-dev-kit/ndk-svelte';
 	import { sha256 } from 'js-sha256';
-	import { generateRandomHex } from '@/utils';
 	import { derived } from 'svelte/store';
 	import { Problem } from '@/event_helpers/problems';
 	import { Avatar, Name } from '@nostr-dev-kit/ndk-svelte-components';
