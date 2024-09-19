@@ -4,7 +4,7 @@
 	import * as Dialog from '$lib/components/ui/dialog/index.js';
 	import type NDKSvelte from '@nostr-dev-kit/ndk-svelte';
 	import { NDKEvent } from '@nostr-dev-kit/ndk';
-	import { currentUser, devmode } from '@/stores/session';
+	import { currentUser } from '@/stores/session';
 	import Login from '../../components/Login.svelte';
 	import { ndk } from '@/ndk';
 	import * as RadioGroup from '$lib/components/ui/radio-group/index.js';
@@ -13,6 +13,12 @@
 	import { onDestroy } from 'svelte';
 	import type { NDKEventStore } from '@nostr-dev-kit/ndk-svelte';
 	import { sha256 } from 'js-sha256';
+	import { generateRandomHex } from '@/utils';
+	import { derived } from 'svelte/store';
+	import { Problem } from '@/event_helpers/problems';
+	import { Avatar, Name } from '@nostr-dev-kit/ndk-svelte-components';
+	import * as HoverCard from '$lib/components/ui/hover-card';
+	import ProfileCard from '../../components/ProfileCard.svelte';
 
 	let problems: NDKEventStore<NDKEvent> | undefined;
 	onDestroy(() => {
@@ -21,11 +27,9 @@
 
 	problems = $ndk.storeSubscribe([{ kinds: [31971 as number] }], { subId: 'rockets' });
 
-	function printList(e: NDKEvent[]) {
-		for (let _e of e) {
-			console.log(_e.rawEvent());
-		}
-	}
+	const validProblems = derived(problems, ($problems) =>
+		$problems.map(Problem.fromEvent).filter((problem) => problem.isValid())
+	);
 
 	let tldr: string = '';
 	let para: string = '';
@@ -136,13 +140,38 @@
 						</Dialog.Footer>
 					</Dialog.Content>
 				</Dialog.Root>
-				{#if $problems && $devmode}
-					<Button variant="outline" on:click={() => printList($problems)}>
-						Print Problems to Console
-					</Button>
-				{/if}
 			</Card.Content>
 			<Card.Footer></Card.Footer>
 		</Card.Root>
+		{#each $validProblems as problem}
+			<Card.Root class="overflow-hidden rounded-lg bg-white shadow-md">
+				<Card.Content class="p-6">
+					<div class="mb-2 text-lg font-semibold">{problem.tldr}</div>
+					<HoverCard.Root>
+						<HoverCard.Trigger>
+							<div
+								class="mb-4 flex w-fit cursor-default select-none items-center rounded-full px-2 py-1 hover:bg-gray-100"
+							>
+								<Avatar
+									ndk={$ndk}
+									pubkey={problem.creator}
+									class="h-10 w-10 flex-none rounded-full object-cover"
+								/>
+								<Name
+									ndk={$ndk}
+									pubkey={problem.creator}
+									class="hidden max-w-32 truncate p-2 md:inline-block"
+								/>
+							</div>
+						</HoverCard.Trigger>
+						<HoverCard.Content>
+							<ProfileCard pubkey={problem.creator} />
+						</HoverCard.Content>
+					</HoverCard.Root>
+
+					<div class="text-gray-700">{problem.para}</div>
+				</Card.Content>
+			</Card.Root>
+		{/each}
 	</main>
 </div>
