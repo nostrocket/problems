@@ -54,12 +54,3 @@ export const flyAndScale = (
 		easing: cubicOut
 	};
 };
-
-export function generateRandomHex(length: number): string {
-	const hexChars = '0123456789abcdef';
-	let result = '';
-	for (let i = 0; i < length; i++) {
-		result += hexChars[Math.floor(Math.random() * 16)];
-	}
-	return result;
-}
