@@ -10,25 +10,56 @@
 	import Login from '../components/Login.svelte';
 	import { Badge } from '@/components/ui/badge';
 	import { bitcoinTip } from '@/stores/bitcoin';
+	import { AngleLeftSolid, AngleRightSolid } from 'svelte-awesome-icons';
 
-	// export let title = '';
 	let open = false;
+	let expandSidebar = true;
 </script>
 
-<div class="grid min-h-screen w-full md:grid-cols-[220px_1fr] lg:grid-cols-[260px_1fr]">
+<div
+	class={`grid min-h-screen w-full ${expandSidebar ? 'md:grid-cols-[220px_1fr] lg:grid-cols-[260px_1fr]' : ''}`}
+>
 	<div class="hidden border-r bg-muted/40 md:block">
-		<div class="flex h-full max-h-screen flex-col gap-2">
-			<div class="flex h-14 items-center border-b px-4 lg:h-[60px] lg:px-6">
-				<a href="{base}/" class="flex items-center gap-2 font-semibold">
-					<span class="">Problems</span>
-				</a>
+		{#if expandSidebar}
+			<div class="flex h-full max-h-screen flex-col gap-2">
+				<div class="flex h-14 items-center border-b px-4 lg:h-[60px] lg:px-6">
+					<a href="{base}/" class="flex items-center gap-2 font-semibold">
+						<span class="">Problems</span>
+					</a>
+				</div>
+				<div class="flex-1">
+					<nav class="items-start px-2 text-sm font-medium lg:px-4">
+						<NewMenu />
+					</nav>
+				</div>
+				<button
+					on:click={() => {
+						expandSidebar = false;
+					}}
+					class="mb-2 flex transform items-center justify-center rounded-r-full bg-blue-500 px-4 py-2 font-semibold
+					 text-white opacity-20 shadow-md transition
+					  duration-300 ease-in-out hover:scale-105
+						hover:bg-blue-600 hover:opacity-70 md:w-[180px] lg:w-[220px]"
+				>
+					<AngleLeftSolid />
+					Close Sidebar
+				</button>
 			</div>
-			<div class="flex-1">
-				<nav class="grid items-start px-2 text-sm font-medium lg:px-4">
-					<NewMenu />
-				</nav>
-			</div>
-		</div>
+		{:else}
+			<button
+				on:click={() => {
+					expandSidebar = true;
+				}}
+				class="absolute bottom-2 left-0 flex items-center justify-center rounded-r-full bg-green-500
+				 px-4 py-2 font-semibold text-white
+				 opacity-20 shadow-md transition
+				 duration-300 ease-in-out hover:scale-105
+				 hover:bg-green-600 hover:opacity-70 md:w-[180px] lg:w-[220px]"
+			>
+				Expand Sidebar
+				<AngleRightSolid />
+			</button>
+		{/if}
 	</div>
 	<div class="flex h-dvh flex-col">
 		<header
