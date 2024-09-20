@@ -3,7 +3,7 @@
 	import { Button } from '@/components/ui/button';
 	import * as Dialog from '$lib/components/ui/dialog';
 	import { NDKPrivateKeySigner } from '@nostr-dev-kit/ndk';
-	import { nip19 } from 'nostr-tools';
+	import { bech32 } from '@scure/base';
 	import CopyButton from './CopyButton.svelte';
 	import { Input } from '$lib/components/ui/input';
 	import { pubkey } from '@/stores/session';
@@ -13,8 +13,13 @@
 
 	async function createTemporaryAccount() {
 		temporaryAccount = NDKPrivateKeySigner.generate();
-		nsec = nip19.nsecEncode(temporaryAccount.privateKey!);
-		console.log(nsec);
+		const privateKeyHex = temporaryAccount.privateKey!;
+		const privateKeyBytes = new Uint8Array(
+			privateKeyHex.match(/.{1,2}/g)!.map((byte) => parseInt(byte, 16))
+		);
+
+		const words = bech32.toWords(privateKeyBytes);
+		nsec = bech32.encode('nsec', words, 1000);
 	}
 
 	async function useTemporaryAccount() {

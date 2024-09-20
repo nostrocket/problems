@@ -12,13 +12,16 @@ const STORAGE_KEYS = {
 export function loginWithNsec(nsec: string): NDKPrivateKeySigner | Error {
 	try {
 		const { type, data } = nip19.decode(nsec);
-		if (type !== 'nsec' || typeof data !== 'string') {
+		console.log(typeof type, typeof data, data);
+
+		if (type !== 'nsec' || !(typeof data === 'string' || data instanceof Uint8Array)) {
 			throw new Error('Invalid nsec format');
 		}
+
 		return new NDKPrivateKeySigner(data);
-	} catch (e) {
-		console.error('Error logging in with nsec:', e);
-		return e instanceof Error ? e : new Error(String(e));
+	} catch (error) {
+		console.error('Error logging in with nsec:', error);
+		return error instanceof Error ? error : new Error(String(error));
 	}
 }
 
