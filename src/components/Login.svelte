@@ -79,15 +79,11 @@
 
 {#if !$ndk.signer}
 	<Dialog.Root>
-		<Dialog.Trigger class="shrink-0">
-			<Button disabled={isLoading}>
-				{#if isLoading}
-					Loading...
-				{:else}
-					Log In
-				{/if}
-			</Button>
-		</Dialog.Trigger>
+		{#if !isLoading}
+			<Dialog.Trigger class="shrink-0">
+				<Button disabled={isLoading}>Log In</Button>
+			</Dialog.Trigger>
+		{/if}
 		<Dialog.Content class="flex flex-col gap-4 p-4">
 			<Dialog.Header>
 				<Dialog.Title>Log In</Dialog.Title>
@@ -103,7 +99,11 @@
 	<DropdownMenu.Root>
 		<DropdownMenu.Trigger asChild let:builder>
 			<Button builders={[builder]} variant="secondary" size="icon" class="shrink-0 rounded-full">
-				<Avatar ndk={$ndk} pubkey={$pubkey} class="flex-none rounded-full object-cover" />
+				<Avatar
+					ndk={$ndk}
+					pubkey={$pubkey}
+					class="aspect-square flex-none rounded-full object-cover"
+				/>
 				<span class="sr-only">Toggle user menu</span>
 			</Button>
 		</DropdownMenu.Trigger>

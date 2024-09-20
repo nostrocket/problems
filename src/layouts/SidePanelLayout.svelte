@@ -63,45 +63,45 @@
 		{/if}
 	</div>
 	<div class="flex h-dvh flex-col">
-		<header
-			class="flex h-14 items-center justify-center gap-4 border-b bg-muted/40 px-4 lg:h-[60px] lg:px-6"
-		>
-			<Sheet.Root bind:open>
-				<Sheet.Trigger asChild let:builder>
-					<Button variant="outline" size="icon" class="shrink-0 md:hidden" builders={[builder]}>
-						<Menu class="h-5 w-5" />
-						<span class="sr-only">Toggle navigation menu</span>
-					</Button>
-				</Sheet.Trigger>
-				<Sheet.Content side="left" class="flex flex-col">
-					<nav class="grid gap-2 text-lg font-medium">
-						<a
-							href="{base}/"
-							class="flex items-center gap-2 text-lg font-semibold"
-							on:click={() => (open = false)}
-						>
-							<span>Problems</span>
-						</a>
-						<NewMenu closeSheet={() => (open = false)} />
-					</nav>
-				</Sheet.Content>
-			</Sheet.Root>
-			<div class="flex w-full shrink justify-between">
-				<LogNewProblem />
-				<Badge class="flex h-8 max-w-16 shrink-0 items-center justify-center rounded-sm"
+		<header class="flex h-14 items-center border-b bg-muted/40 px-4 lg:h-[60px] lg:px-6">
+			<div class="shrink-0 pr-4 md:hidden">
+				<Sheet.Root bind:open>
+					<Sheet.Trigger asChild let:builder>
+						<Button variant="outline" size="icon" builders={[builder]}>
+							<Menu class="h-5 w-5" />
+							<span class="sr-only">Toggle navigation menu</span>
+						</Button>
+					</Sheet.Trigger>
+					<Sheet.Content side="left" class="flex flex-col">
+						<nav class="grid gap-2 text-lg font-medium">
+							<a
+								href="{base}/"
+								class="flex items-center gap-2 text-lg font-semibold"
+								on:click={() => (open = false)}
+							>
+								<span>Problems</span>
+							</a>
+							<NewMenu closeSheet={() => (open = false)} />
+						</nav>
+					</Sheet.Content>
+				</Sheet.Root>
+			</div>
+			<LogNewProblem />
+			<div class="flex w-full flex-1 items-center justify-end gap-2">
+				<Badge class="flex h-9 max-w-16 shrink-0 items-center justify-center rounded-md"
 					>{$bitcoinTip.height}</Badge
 				>
+				<Button on:click={toggleMode} variant="outline" size="icon" class="shrink-0">
+					<Sun
+						class="h-[1.2rem] w-[1.2rem] rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0"
+					/>
+					<Moon
+						class="absolute h-[1.2rem] w-[1.2rem] rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100"
+					/>
+					<span class="sr-only">Toggle theme</span>
+				</Button>
+				<Login />
 			</div>
-			<Button on:click={toggleMode} variant="outline" size="icon" class="shrink-0">
-				<Sun
-					class="h-[1.2rem] w-[1.2rem] rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0"
-				/>
-				<Moon
-					class="absolute h-[1.2rem] w-[1.2rem] rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100"
-				/>
-				<span class="sr-only">Toggle theme</span>
-			</Button>
-			<Login />
 		</header>
 		<div class="flex flex-1 flex-col gap-4 overflow-auto p-4 lg:gap-6 lg:p-6">
 			<slot name="content"></slot>

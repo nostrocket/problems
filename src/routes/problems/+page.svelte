@@ -21,7 +21,7 @@
 
 <div class="flex flex-col gap-4">
 	<div class="grid w-full flex-1 grid-cols-1 items-start gap-4 sm:grid-cols-3 md:gap-2">
-		{#each $validProblems as problem}
+		{#each $validProblems as problem (problem.identify)}
 			<ProblemPreviewCard {problem} />
 		{/each}
 	</div>

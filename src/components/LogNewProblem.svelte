@@ -16,6 +16,9 @@
 	let para: string = '';
 	let child_status: 'rfm' | 'open' = 'rfm';
 
+	let isDialogOpen = false;
+	let isPublishing = false;
+
 	function validateInputs(tldr: string, para: string) {
 		const errors = {
 			tldr: '',
@@ -36,6 +39,9 @@
 	$: isValid = !errors.tldr && !errors.para;
 
 	function publish(ndk: NDKSvelte) {
+		if (isPublishing) return;
+		isPublishing = true;
+
 		if (!ndk.signer) {
 			throw new Error('no ndk signer found');
 		}
@@ -57,13 +63,23 @@
 		e.tags.push(['tldr', tldr]);
 		e.tags.push(['para', para]);
 		e.tags.push(['child_status', child_status]);
-		e.publish().then((x) => {
-			console.log(x);
-		});
+		e.publish()
+			.then((x) => {
+				console.log(x);
+				isDialogOpen = false;
+				tldr = '';
+				para = '';
+				child_status = 'rfm';
+				isPublishing = false;
+			})
+			.catch((error) => {
+				console.error('Publish failed:', error);
+				isPublishing = false;
+			});
 	}
 </script>
 
-<Dialog.Root>
+<Dialog.Root bind:open={isDialogOpen}>
 	<Dialog.Trigger>
 		<Button>Log a new problem</Button>
 	</Dialog.Trigger>
@@ -103,9 +119,13 @@
 		</RadioGroup.Root>
 		<Dialog.Footer>
 			{#if $currentUser}
-				<Button disabled={!tldr || !para || !isValid} on:click={() => publish($ndk)} type="submit"
-					>Publish</Button
+				<Button
+					disabled={!tldr || !para || !isValid || isPublishing}
+					on:click={() => publish($ndk)}
+					type="submit"
 				>
+					{isPublishing ? 'Publishing...' : 'Publish'}
+				</Button>
 			{:else}
 				<Login />
 			{/if}
