@@ -103,7 +103,7 @@
 				<Login />
 			</div>
 		</header>
-		<div class="flex flex-1 flex-col gap-4 overflow-auto p-4 lg:gap-6 lg:p-6">
+		<div class="flex flex-1 flex-col overflow-auto p-4">
 			<slot name="content"></slot>
 		</div>
 	</div>
