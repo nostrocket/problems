@@ -1,9 +1,7 @@
 <script lang="ts">
-	import { NDKEvent } from '@nostr-dev-kit/ndk';
-
 	import ScrollArea from '@/components/ui/scroll-area/scroll-area.svelte';
-	import { formatTimeAgo } from '@/helpers';
 	import type { Problem } from '@/event_helpers/problems';
+	import { formatTimeAgo } from '@/helpers';
 	export let items: Problem[];
 	export let bloom: false; //todo
 </script>
@@ -12,6 +10,9 @@
 	<div class="flex flex-col gap-2 p-2 pt-0">
 		{#each items as item}
 			<button
+				on:click={() => {
+					console.log(item.event);
+				}}
 				class="flex flex-col items-start gap-2 rounded-lg border p-3 text-left text-sm transition-all hover:bg-accent"
 			>
 				<div class="flex w-full flex-col gap-1">
@@ -23,7 +24,7 @@
 							{/if}
 						</div>
 						<div class="ml-auto text-xs text-foreground">
-							{formatTimeAgo(new Date(item.event.created_at))}
+							{formatTimeAgo(new Date(item.event.created_at * 1000))}
 						</div>
 					</div>
 					<div class="text-xs font-medium">{item.para}</div>
