@@ -5,7 +5,7 @@ export class Problem {
 
 	constructor(
 		event: NDKEvent,
-		public identify: string,
+		public dtag: string,
 		public tldr: string,
 		public para: string,
 		public child_status: 'rfm' | 'open'
@@ -28,6 +28,6 @@ export class Problem {
 	}
 
 	isValid(): boolean {
-		return this.identify !== '' && this.tldr !== '' && this.para !== '';
+		return this.dtag !== '' && this.tldr !== '' && this.para !== '';
 	}
 }

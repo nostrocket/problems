@@ -8,5 +8,7 @@
 	<Resizable.Handle withHandle />
 	<Resizable.Pane minSize={40} maxSize={85}><slot name="problem"></slot></Resizable.Pane>
 	<Resizable.Handle withHandle />
-	<Resizable.Pane minSize={15} maxSize={30}><slot name="meta"></slot></Resizable.Pane>
+	<Resizable.Pane minSize={10} defaultSize={20} maxSize={30}
+		><slot name="meta"></slot></Resizable.Pane
+	>
 </Resizable.PaneGroup>

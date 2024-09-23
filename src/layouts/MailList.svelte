@@ -3,6 +3,7 @@
 	import type { Problem } from '@/event_helpers/problems';
 	import { formatTimeAgo } from '@/helpers';
 	export let items: Problem[];
+	export let selected: Problem;
 	export let bloom: false; //todo
 </script>
 
@@ -12,6 +13,7 @@
 			<button
 				on:click={() => {
 					console.log(item.event);
+					selected = item;
 				}}
 				class="flex flex-col items-start gap-2 rounded-lg border p-3 text-left text-sm transition-all hover:bg-accent"
 			>
