@@ -3,12 +3,14 @@
 </script>
 
 <Resizable.PaneGroup direction="horizontal" class="h-full max-h-[800px] items-stretch">
-	<Resizable.Pane collapsible minSize={15} maxSize={30}><slot name="list"></slot></Resizable.Pane>
+	<Resizable.Pane defaultSize={40} minSize={10} maxSize={50}
+		><slot name="list"></slot></Resizable.Pane
+	>
 
 	<Resizable.Handle withHandle />
 	<Resizable.Pane minSize={40} maxSize={85}><slot name="problem"></slot></Resizable.Pane>
 	<Resizable.Handle withHandle />
-	<Resizable.Pane minSize={10} defaultSize={20} maxSize={30}
+	<Resizable.Pane minSize={10} defaultSize={10} maxSize={30}
 		><slot name="meta"></slot></Resizable.Pane
 	>
 </Resizable.PaneGroup>

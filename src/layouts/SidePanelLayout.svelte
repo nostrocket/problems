@@ -103,7 +103,7 @@
 				<Login />
 			</div>
 		</header>
-		<div class="flex flex-1 flex-col overflow-auto p-4">
+		<div class="flex flex-1 flex-col overflow-auto pt-2">
 			<slot name="content"></slot>
 		</div>
 	</div>
