@@ -11,7 +11,7 @@
 	import { Badge } from '@/components/ui/badge';
 	import { bitcoinTip } from '@/stores/bitcoin';
 	import { AngleLeftSolid, AngleRightSolid } from 'svelte-awesome-icons';
-	import LogNewProblem from '../components/LogNewProblem.svelte';
+	import { goto } from '$app/navigation';
 
 	let open = false;
 	let expandSidebar = true;
@@ -86,7 +86,7 @@
 					</Sheet.Content>
 				</Sheet.Root>
 			</div>
-			<LogNewProblem />
+			<Button on:click={async () => await goto(`${base}/logNewProblem`)}>Log New Problem</Button>
 			<div class="flex w-full flex-1 items-center justify-end gap-2">
 				<Badge class="flex h-9 max-w-16 shrink-0 items-center justify-center rounded-md"
 					>{$bitcoinTip.height}</Badge
@@ -103,7 +103,7 @@
 				<Login />
 			</div>
 		</header>
-		<div class="flex flex-1 flex-col overflow-auto pt-2">
+		<div class="flex flex-1 flex-col gap-4 overflow-auto p-4 lg:gap-6 lg:p-6">
 			<slot name="content"></slot>
 		</div>
 	</div>
