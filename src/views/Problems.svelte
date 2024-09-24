@@ -9,6 +9,7 @@
 	import MailList from '../layouts/MailList.svelte';
 	import ProblemView from '../components/ProblemView.svelte';
 	import { Badge } from '@/components/ui/badge';
+	import Filters from '../components/Filters.svelte';
 
 	let problems: NDKEventStore<NDKEvent> | undefined;
 	onDestroy(() => {
@@ -25,7 +26,7 @@
 </script>
 
 <MailLayout>
-	<div slot="filters"><Badge variant="outline">sdf</Badge></div>
+	<div slot="filters"><Filters /></div>
 	<div slot="list">
 		<MailList items={$validProblems} bloom={false} bind:selected />
 	</div>
