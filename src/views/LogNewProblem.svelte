@@ -1,11 +1,13 @@
 <script lang="ts">
 	import { Button } from '@/components/ui/button';
 
-	import * as Dialog from '@/components/ui/dialog';
-	import TextareaField from './TextareaField.svelte';
+	import { goto } from '$app/navigation';
+	import { base } from '$app/paths';
+	import * as Card from '@/components/ui/card';
+	import TextareaField from '../components/TextareaField.svelte';
 	import * as RadioGroup from '@/components/ui/radio-group';
 	import { currentUser } from '@/stores/session';
-	import Login from './Login.svelte';
+	import Login from '../components/Login.svelte';
 	import { ndk } from '@/ndk';
 	import type NDKSvelte from '@nostr-dev-kit/ndk-svelte';
 	import { NDKEvent } from '@nostr-dev-kit/ndk';
@@ -14,9 +16,9 @@
 
 	let tldr: string = '';
 	let para: string = '';
+	let page: string = '';
 	let child_status: 'rfm' | 'open' = 'rfm';
 
-	let isDialogOpen = false;
 	let isPublishing = false;
 
 	function validateInputs(tldr: string, para: string) {
@@ -62,15 +64,18 @@
 		e.tags.push(['d', identify]);
 		e.tags.push(['tldr', tldr]);
 		e.tags.push(['para', para]);
+		if (page) {
+			e.tags.push(['page', page]);
+		}
 		e.tags.push(['child_status', child_status]);
 		e.publish()
-			.then((x) => {
+			.then(async (x) => {
 				console.log(x);
-				isDialogOpen = false;
 				tldr = '';
 				para = '';
 				child_status = 'rfm';
 				isPublishing = false;
+				await goto(`${base}/problems`);
 			})
 			.catch((error) => {
 				console.error('Publish failed:', error);
@@ -79,56 +84,55 @@
 	}
 </script>
 
-<Dialog.Root bind:open={isDialogOpen}>
-	<Dialog.Trigger>
-		<Button>Log a new problem</Button>
-	</Dialog.Trigger>
-	<Dialog.Content class="modal sm:max-w-[625px]">
-		<Dialog.Header>
-			<Dialog.Title>New problem</Dialog.Title>
-		</Dialog.Header>
-		<TextareaField
-			title="Title"
-			bind:value={tldr}
-			errorText={errors.tldr}
-			options={{
-				placeholder: 'Enter a brief description (max 140 characters)',
-				style: 'height: 80px;'
-			}}
-		/>
-		<TextareaField
-			title="Description"
-			bind:value={para}
-			errorText={errors.para}
-			options={{
-				placeholder: 'Enter a detailed description (max 560 characters)',
-				style: 'height: 200px;'
-			}}
-		/>
-		<div>Child status upon creation</div>
-		<RadioGroup.Root bind:value={child_status} class="flex">
-			<div class="flex items-center space-x-2">
-				<RadioGroup.Item value="rfm" id="r1" />
-				<Label for="r1">RFM</Label>
-			</div>
-			<div class="flex items-center space-x-2">
-				<RadioGroup.Item value="open" id="r2" />
-				<Label for="r2">Open</Label>
-			</div>
-			<RadioGroup.Input name="spacing" />
-		</RadioGroup.Root>
-		<Dialog.Footer>
-			{#if $currentUser}
-				<Button
-					disabled={!tldr || !para || !isValid || isPublishing}
-					on:click={() => publish($ndk)}
-					type="submit"
-				>
-					{isPublishing ? 'Publishing...' : 'Publish'}
-				</Button>
-			{:else}
-				<Login />
-			{/if}
-		</Dialog.Footer>
-	</Dialog.Content>
-</Dialog.Root>
+<div class="flex flex-col justify-start gap-2">
+	<div class="text-3xl font-bold">Log New problem</div>
+	<TextareaField
+		title="Title"
+		bind:value={tldr}
+		errorText={errors.tldr}
+		options={{
+			placeholder: 'Enter a brief description (max 140 characters)',
+			style: 'height: 60px;'
+		}}
+	/>
+	<TextareaField
+		title="Description"
+		bind:value={para}
+		errorText={errors.para}
+		options={{
+			placeholder: 'Enter a detailed description (max 560 characters)',
+			style: 'height: 180px;'
+		}}
+	/>
+	<TextareaField
+		title="One page describing the problem"
+		bind:value={page}
+		options={{
+			placeholder: 'Enter one page describing the problem, MAY include markdown',
+			style: 'height: 300px;'
+		}}
+	/>
+	<div>Child status upon creation</div>
+	<RadioGroup.Root bind:value={child_status} class="flex">
+		<div class="flex items-center space-x-2">
+			<RadioGroup.Item value="rfm" id="r1" />
+			<Label for="r1">RFM</Label>
+		</div>
+		<div class="flex items-center space-x-2">
+			<RadioGroup.Item value="open" id="r2" />
+			<Label for="r2">Open</Label>
+		</div>
+		<RadioGroup.Input name="spacing" />
+	</RadioGroup.Root>
+	{#if $currentUser}
+		<Button
+			disabled={!tldr || !para || !isValid || isPublishing}
+			on:click={() => publish($ndk)}
+			type="submit"
+		>
+			{isPublishing ? 'Publishing...' : 'Publish'}
+		</Button>
+	{:else}
+		<Login />
+	{/if}
+</div>

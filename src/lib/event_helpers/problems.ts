@@ -1,5 +1,6 @@
 import { NDKEvent } from '@nostr-dev-kit/ndk';
 
+// https://github.com/nostrocket/NIPS/blob/main/Problems.md
 export class Problem {
 	public readonly event: NDKEvent;
 
@@ -8,6 +9,7 @@ export class Problem {
 		public dtag: string,
 		public tldr: string,
 		public para: string,
+		public page: string,
 		public child_status: 'rfm' | 'open'
 	) {
 		this.event = event;
@@ -19,6 +21,7 @@ export class Problem {
 			event.dTag ?? '',
 			event.getMatchingTags('tldr')[0]?.[1] ?? '',
 			event.getMatchingTags('para')[0]?.[1] ?? '',
+			event.getMatchingTags('page')[0]?.[1] ?? '',
 			event.getMatchingTags('child_status')[0]?.[1] as 'rfm' | 'open'
 		);
 	}
