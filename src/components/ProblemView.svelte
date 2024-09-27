@@ -13,7 +13,9 @@
 		<p class="text-sm text-muted-foreground">
 			{problem.para}
 		</p>
-		<Carta.CartaViewer carta={new Carta.Carta()} value={problem.page} />
+		{#key problem.event.id}
+			<Carta.CartaViewer carta={new Carta.Carta()} value={problem.page} />
+		{/key}
 	</div>
 {:else}
 	<Card.Root class="m-4 mt-32 p-4"
