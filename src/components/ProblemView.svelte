@@ -14,7 +14,9 @@
 			{problem.para}
 		</p>
 		{#key problem.event.id}
-			<Carta.CartaViewer carta={new Carta.Carta()} value={problem.page} />
+			<div class="text-left">
+				<Carta.CartaViewer carta={new Carta.Carta()} value={problem.page} />
+			</div>
 		{/key}
 	</div>
 {:else}
