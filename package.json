@@ -39,6 +39,7 @@
 		"@sveltejs/adapter-static": "^3.0.4",
 		"bitcoin-address-validation": "^2.2.3",
 		"bits-ui": "^0.21.15",
+		"carta-md": "^4.5.0",
 		"clsx": "^2.1.1",
 		"cmdk-sv": "^0.0.18",
 		"embla-carousel-svelte": "^8.3.0",

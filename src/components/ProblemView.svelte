@@ -2,6 +2,7 @@
 	import * as Card from '@/components/ui/card';
 	import type { Problem } from '@/event_helpers/problems';
 	import { ArrowBigLeft } from 'lucide-svelte';
+	import * as Carta from 'carta-md';
 
 	export let problem: Problem;
 </script>
@@ -12,6 +13,7 @@
 		<p class="text-sm text-muted-foreground">
 			{problem.para}
 		</p>
+		<Carta.CartaViewer carta={new Carta.Carta()} value={problem.page} />
 	</div>
 {:else}
 	<Card.Root class="m-4 mt-32 p-4"
