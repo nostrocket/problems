@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { mode } from 'mode-watcher';
 	import * as Card from '@/components/ui/card';
 	import type { Problem } from '@/event_helpers/problems';
 	import { ArrowBigLeft } from 'lucide-svelte';
@@ -14,7 +15,7 @@
 			{problem.para}
 		</p>
 		{#key problem.event.id}
-			<div class="text-left">
+			<div class="markdown text-left">
 				<Carta.CartaViewer carta={new Carta.Carta()} value={problem.page} />
 			</div>
 		{/key}
@@ -27,3 +28,6 @@
 		></Card.Root
 	>
 {/if}
+
+<style>
+</style>
