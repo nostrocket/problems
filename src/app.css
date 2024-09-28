@@ -80,16 +80,16 @@
 .markdown p {
 	padding-bottom: 8px;
 }
-h1 {
+.markdown h1 {
 	padding-bottom: 12px;
 	font-size: x-large;
 	text-decoration: underline;
 }
-h2 {
+.markdown h2 {
 	padding-bottom: 10px;
 	font-size: larger;
 }
-code {
+.markdown code {
 	display: block;
 	margin: 12px;
 	background-blend-mode: lighten;

@@ -5,9 +5,19 @@
 	export let items: Problem[];
 	export let selected: Problem;
 	export let bloom: false; //todo
+	import { Search } from 'lucide-svelte';
+	import { Input } from '@/components/ui/input';
+	import Filters from '../components/Filters.svelte';
 </script>
 
-<div class="flex flex-col gap-2 p-2 pt-0">
+<div class="flex flex-col gap-2">
+	<div class="gap-2"><Filters /></div>
+	<form>
+		<div class="relative">
+			<Search class="absolute left-2 top-[50%] h-4 w-4 translate-y-[-50%] text-muted-foreground" />
+			<Input placeholder="Search" class="pl-8" />
+		</div>
+	</form>
 	{#each items as item}
 		<button
 			on:click={() => {

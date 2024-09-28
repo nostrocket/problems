@@ -26,7 +26,6 @@
 </script>
 
 <MailLayout>
-	<div slot="filters"><Filters /></div>
 	<div slot="list">
 		<MailList items={$validProblems} bloom={false} bind:selected />
 	</div>
