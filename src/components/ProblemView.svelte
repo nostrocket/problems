@@ -20,26 +20,28 @@
 		</p>
 		<Card.Root class="m-2 w-full rounded-none p-2"
 			><Card.Content class="p-0">
-				<HoverCard.Root>
-					<HoverCard.Trigger>
-						<div class="flex flex-nowrap items-center gap-2">
-							<Avatar
-								ndk={$ndk}
-								pubkey={problem.creator}
-								class="h-8 w-8 flex-none rounded-full object-cover"
-							/>
-							<Name
-								ndk={$ndk}
-								pubkey={problem.creator}
-								class="hidden max-w-32 truncate p-1 font-mono text-white dark:text-black md:inline-block"
-							/>
-						</div>
-					</HoverCard.Trigger>
-					<HoverCard.Content>
-						<ProfileCard pubkey={$pubkey} />
-					</HoverCard.Content>
-				</HoverCard.Root></Card.Content
-			></Card.Root
+				{#key problem.creator}
+					<HoverCard.Root>
+						<HoverCard.Trigger>
+							<div class="flex flex-nowrap items-center gap-2">
+								<Avatar
+									ndk={$ndk}
+									pubkey={problem.creator}
+									class="h-8 w-8 flex-none rounded-full object-cover"
+								/>
+								<Name
+									ndk={$ndk}
+									pubkey={problem.creator}
+									class="hidden max-w-32 truncate p-1 font-mono text-white dark:text-black md:inline-block"
+								/>
+							</div>
+						</HoverCard.Trigger>
+						<HoverCard.Content>
+							<ProfileCard pubkey={$pubkey} />
+						</HoverCard.Content>
+					</HoverCard.Root>
+				{/key}
+			</Card.Content></Card.Root
 		>
 		{#key problem.event.id}
 			<div class="markdown">
