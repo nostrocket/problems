@@ -10,15 +10,15 @@
 	import Filters from '../components/Filters.svelte';
 </script>
 
-<div class="flex flex-col gap-2 p-2">
-	<div class="gap-2"><Filters /></div>
-	<form>
+<div class="flex flex-col gap-2">
+	<div class="gap-2 px-4 pt-2"><Filters /></div>
+	<form class="px-4">
 		<div class="relative">
 			<Search class="absolute left-2 top-[50%] h-4 w-4 translate-y-[-50%] text-muted-foreground" />
 			<Input placeholder="Search" class="pl-8" />
 		</div>
 	</form>
-	<ScrollArea class="h-[calc(100vh-150px)]">
+	<ScrollArea class="h-[calc(100vh-154px)] px-4">
 		<div class="flex flex-col items-center gap-2">
 			{#each items as item}
 				<button
