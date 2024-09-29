@@ -10,23 +10,23 @@
 	import Filters from '../components/Filters.svelte';
 </script>
 
-<div class="flex flex-col gap-2">
-	<div class="gap-2 px-2"><Filters /></div>
-	<form class="px-2">
+<div class="flex flex-col gap-2 p-2">
+	<div class="gap-2"><Filters /></div>
+	<form>
 		<div class="relative">
 			<Search class="absolute left-2 top-[50%] h-4 w-4 translate-y-[-50%] text-muted-foreground" />
 			<Input placeholder="Search" class="pl-8" />
 		</div>
 	</form>
-	<ScrollArea class="h-[calc(100vh-142px)]">
-		<div class="flex flex-col items-center gap-2 p-2">
+	<ScrollArea class="h-[calc(100vh-150px)]">
+		<div class="flex flex-col items-center gap-2">
 			{#each items as item}
 				<button
 					on:click={() => {
 						console.log(item.event);
 						selected = item;
 					}}
-					class="flex flex-col items-start gap-2 rounded-lg border p-3 text-left text-sm transition-all hover:bg-accent"
+					class="flex w-full flex-col items-start gap-2 rounded-lg border p-3 text-left text-sm transition-all hover:bg-accent"
 				>
 					<div class="flex w-full flex-col gap-1">
 						<div class="flex items-center">

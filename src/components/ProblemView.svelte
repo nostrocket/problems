@@ -25,55 +25,57 @@
 			</p>
 			<Card.Root class="m-2 w-full rounded-none p-2"
 				><Card.Content class="p-0">
-					{#if !preview}
-						{#key problem.creator}
+					<div class="w-fit">
+						{#if !preview}
+							{#key problem.creator}
+								<HoverCard.Root>
+									<HoverCard.Trigger>
+										<div class="flex flex-nowrap items-center gap-2">
+											<Avatar
+												ndk={$ndk}
+												pubkey={problem.creator}
+												class="h-8 w-8 flex-none rounded-full object-cover"
+											/>
+											<Name
+												ndk={$ndk}
+												pubkey={problem.creator}
+												class="hidden max-w-32 truncate p-1 font-mono text-black dark:text-white md:inline-block"
+											/>
+										</div>
+									</HoverCard.Trigger>
+									<HoverCard.Content>
+										<ProfileCard pubkey={problem.creator} />
+									</HoverCard.Content>
+								</HoverCard.Root>
+							{/key}
+						{:else if $pubkey}
 							<HoverCard.Root>
 								<HoverCard.Trigger>
 									<div class="flex flex-nowrap items-center gap-2">
 										<Avatar
 											ndk={$ndk}
-											pubkey={problem.creator}
+											pubkey={$pubkey}
 											class="h-8 w-8 flex-none rounded-full object-cover"
 										/>
 										<Name
 											ndk={$ndk}
-											pubkey={problem.creator}
+											pubkey={$pubkey}
 											class="hidden max-w-32 truncate p-1 font-mono text-black dark:text-white md:inline-block"
 										/>
 									</div>
 								</HoverCard.Trigger>
 								<HoverCard.Content>
-									<ProfileCard pubkey={problem.creator} />
+									<ProfileCard pubkey={$pubkey} />
 								</HoverCard.Content>
 							</HoverCard.Root>
-						{/key}
-					{:else if $pubkey}
-						<HoverCard.Root>
-							<HoverCard.Trigger>
-								<div class="flex flex-nowrap items-center gap-2">
-									<Avatar
-										ndk={$ndk}
-										pubkey={$pubkey}
-										class="h-8 w-8 flex-none rounded-full object-cover"
-									/>
-									<Name
-										ndk={$ndk}
-										pubkey={$pubkey}
-										class="hidden max-w-32 truncate p-1 font-mono text-black dark:text-white md:inline-block"
-									/>
-								</div>
-							</HoverCard.Trigger>
-							<HoverCard.Content>
-								<ProfileCard pubkey={$pubkey} />
-							</HoverCard.Content>
-						</HoverCard.Root>
-					{:else}
-						<div>User information needs to be displayed after logging in.</div>
-					{/if}
+						{:else}
+							<div>User information needs to be displayed after logging in.</div>
+						{/if}
+					</div>
 				</Card.Content></Card.Root
 			>
 			{#key problem.event}
-				<div class="markdown">
+				<div class="markdown w-full">
 					<CartaViewer {carta} bind:value={problem.page} />
 				</div>
 			{/key}
