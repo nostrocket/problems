@@ -26,6 +26,11 @@ export class Problem {
 		);
 	}
 
+	// only for problem preview
+	static fromObject({ tldr, para, page }: { tldr: string; para: string; page: string }): Problem {
+		return new Problem(new NDKEvent(), '', tldr, para, page, 'rfm');
+	}
+
 	get creator(): string {
 		return this.event.pubkey ?? '';
 	}
