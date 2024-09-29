@@ -3,7 +3,7 @@
 </script>
 
 <Resizable.PaneGroup direction="horizontal" class="h-full items-stretch overflow-hidden">
-	<Resizable.Pane defaultSize={20} minSize={10} maxSize={50}>
+	<Resizable.Pane defaultSize={20} minSize={20} maxSize={50}>
 		<slot name="list" />
 	</Resizable.Pane>
 
