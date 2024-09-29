@@ -11,7 +11,7 @@
 	import { goto } from '$app/navigation';
 	import { base } from '$app/paths';
 	import { connectToBunker, loginWithNsec, purgeSignedInStorage } from '@/login';
-	import { pubkey } from '@/stores/session';
+	import { devmode, pubkey } from '@/stores/session';
 
 	$: isLoading = true;
 
@@ -90,6 +90,11 @@
 			</Dialog.Header>
 			<Button on:click={loginByExtension} class="w-full">Browser Extension</Button>
 			<div class="w-full space-y-2">
+				{#if $devmode}<Button
+						on:click={() => {
+							console.log(window.cosmostation, window.keplr);
+						}}>Cosmos Test</Button
+					>{/if}
 				<UseTemporaryAccount />
 				<ConnectToBunker />
 			</div>
