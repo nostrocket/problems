@@ -5,6 +5,7 @@
 	export let title: string = '';
 	export let value: string = '';
 	export let errorText: string = '';
+	export let promptText: string = '';
 </script>
 
 <div class="relative w-full">
@@ -17,6 +18,9 @@
 		{...options}
 		class="h-24 w-full rounded-lg border px-3 py-2 font-normal leading-relaxed"
 	/>
+	{#if promptText}
+		<div class="text-[13px] font-light text-green-500">{promptText}</div>
+	{/if}
 	{#if errorText}
 		<div class="mt-1.5 text-[13px] font-light text-red-500">{errorText}</div>
 	{/if}
