@@ -6,11 +6,14 @@
 	import { ndk } from '@/ndk';
 	import { pubkey } from '@/stores/session';
 	import { Avatar, Name } from '@nostr-dev-kit/ndk-svelte-components';
-	import * as Carta from 'carta-md';
+	import { Carta, CartaViewer } from 'carta-md';
 	import { ArrowBigLeft } from 'lucide-svelte';
 	import ProfileCard from './ProfileCard.svelte';
 
 	export let problem: Problem;
+	export let preview: boolean = false;
+
+	const carta = new Carta();
 </script>
 
 {#if problem}
@@ -22,19 +25,41 @@
 			</p>
 			<Card.Root class="m-2 w-full rounded-none p-2"
 				><Card.Content class="p-0">
-					{#key problem.creator}
+					{#if !preview}
+						{#key problem.creator}
+							<HoverCard.Root>
+								<HoverCard.Trigger>
+									<div class="flex flex-nowrap items-center gap-2">
+										<Avatar
+											ndk={$ndk}
+											pubkey={problem.creator}
+											class="h-8 w-8 flex-none rounded-full object-cover"
+										/>
+										<Name
+											ndk={$ndk}
+											pubkey={problem.creator}
+											class="hidden max-w-32 truncate p-1 font-mono text-black dark:text-white md:inline-block"
+										/>
+									</div>
+								</HoverCard.Trigger>
+								<HoverCard.Content>
+									<ProfileCard pubkey={problem.creator} />
+								</HoverCard.Content>
+							</HoverCard.Root>
+						{/key}
+					{:else if $pubkey}
 						<HoverCard.Root>
 							<HoverCard.Trigger>
 								<div class="flex flex-nowrap items-center gap-2">
 									<Avatar
 										ndk={$ndk}
-										pubkey={problem.creator}
+										pubkey={$pubkey}
 										class="h-8 w-8 flex-none rounded-full object-cover"
 									/>
 									<Name
 										ndk={$ndk}
-										pubkey={problem.creator}
-										class="hidden max-w-32 truncate p-1 font-mono text-white dark:text-black md:inline-block"
+										pubkey={$pubkey}
+										class="hidden max-w-32 truncate p-1 font-mono text-black dark:text-white md:inline-block"
 									/>
 								</div>
 							</HoverCard.Trigger>
@@ -42,12 +67,14 @@
 								<ProfileCard pubkey={$pubkey} />
 							</HoverCard.Content>
 						</HoverCard.Root>
-					{/key}
+					{:else}
+						<div>User information needs to be displayed after logging in.</div>
+					{/if}
 				</Card.Content></Card.Root
 			>
-			{#key problem.event.id}
+			{#key problem.event}
 				<div class="markdown">
-					<Carta.CartaViewer carta={new Carta.Carta()} value={problem.page} />
+					<CartaViewer {carta} bind:value={problem.page} />
 				</div>
 			{/key}
 		</div>
@@ -60,6 +87,3 @@
 		></Card.Root
 	>
 {/if}
-
-<style>
-</style>

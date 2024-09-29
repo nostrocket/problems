@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { Button } from '@/components/ui/button';
-
+	import ScrollArea from '@/components/ui/scroll-area/scroll-area.svelte';
 	import { goto } from '$app/navigation';
 	import { base } from '$app/paths';
 	import * as Card from '@/components/ui/card';
@@ -13,6 +13,11 @@
 	import { NDKEvent } from '@nostr-dev-kit/ndk';
 	import { sha256 } from 'js-sha256';
 	import { Label } from '@/components/ui/label';
+	import { Carta, MarkdownEditor } from 'carta-md';
+	import LogNewProblemLayout from '../layouts/LogNewProblemLayout.svelte';
+	import 'carta-md/default.css';
+	import ProblemView from '../components/ProblemView.svelte';
+	import { Problem } from '@/event_helpers/problems';
 
 	let tldr: string = '';
 	let para: string = '';
@@ -82,57 +87,68 @@
 				isPublishing = false;
 			});
 	}
+
+	$: problem = Problem.fromObject({
+		tldr,
+		para,
+		page
+	});
+
+	const carta = new Carta();
 </script>
 
-<div class="flex flex-col justify-start gap-2">
-	<div class="text-3xl font-bold">Log New problem</div>
-	<TextareaField
-		title="Title"
-		bind:value={tldr}
-		errorText={errors.tldr}
-		options={{
-			placeholder: 'Enter a brief description (max 140 characters)',
-			style: 'height: 60px;'
-		}}
-	/>
-	<TextareaField
-		title="Description"
-		bind:value={para}
-		errorText={errors.para}
-		options={{
-			placeholder: 'Enter a detailed description (max 560 characters)',
-			style: 'height: 180px;'
-		}}
-	/>
-	<TextareaField
-		title="One page describing the problem"
-		bind:value={page}
-		options={{
-			placeholder: 'Enter one page describing the problem, MAY include markdown',
-			style: 'height: 300px;'
-		}}
-	/>
-	<div>Child status upon creation</div>
-	<RadioGroup.Root bind:value={child_status} class="flex">
-		<div class="flex items-center space-x-2">
-			<RadioGroup.Item value="rfm" id="r1" />
-			<Label for="r1">RFM</Label>
-		</div>
-		<div class="flex items-center space-x-2">
-			<RadioGroup.Item value="open" id="r2" />
-			<Label for="r2">Open</Label>
-		</div>
-		<RadioGroup.Input name="spacing" />
-	</RadioGroup.Root>
-	{#if $currentUser}
-		<Button
-			disabled={!tldr || !para || !isValid || isPublishing}
-			on:click={() => publish($ndk)}
-			type="submit"
-		>
-			{isPublishing ? 'Publishing...' : 'Publish'}
-		</Button>
-	{:else}
-		<Login />
-	{/if}
-</div>
+<LogNewProblemLayout>
+	<div slot="editor">
+		<ScrollArea class="h-[calc(100vh-64px)]">
+			<div class="flex flex-col justify-start gap-2 p-4">
+				<div class="text-3xl font-bold">Log New problem</div>
+				<TextareaField
+					title="Title"
+					bind:value={tldr}
+					errorText={errors.tldr}
+					options={{
+						placeholder: 'Enter a brief description (max 140 characters)',
+						style: 'height: 60px;'
+					}}
+				/>
+				<TextareaField
+					title="Description"
+					bind:value={para}
+					errorText={errors.para}
+					options={{
+						placeholder: 'Enter a detailed description (max 560 characters)',
+						style: 'height: 180px;'
+					}}
+				/>
+				<div>One page describing the problem</div>
+				<MarkdownEditor {carta} bind:value={page} mode="tabs" />
+				<div>Child status upon creation</div>
+				<RadioGroup.Root bind:value={child_status} class="flex">
+					<div class="flex items-center space-x-2">
+						<RadioGroup.Item value="rfm" id="r1" />
+						<Label for="r1">RFM</Label>
+					</div>
+					<div class="flex items-center space-x-2">
+						<RadioGroup.Item value="open" id="r2" />
+						<Label for="r2">Open</Label>
+					</div>
+					<RadioGroup.Input name="spacing" />
+				</RadioGroup.Root>
+				{#if $currentUser}
+					<Button
+						disabled={!tldr || !para || !isValid || isPublishing}
+						on:click={() => publish($ndk)}
+						type="submit"
+					>
+						{isPublishing ? 'Publishing...' : 'Publish'}
+					</Button>
+				{:else}
+					<Login />
+				{/if}
+			</div>
+		</ScrollArea>
+	</div>
+	<div slot="preview">
+		<ProblemView {problem} preview />
+	</div>
+</LogNewProblemLayout>
