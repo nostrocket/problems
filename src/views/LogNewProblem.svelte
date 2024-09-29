@@ -27,23 +27,22 @@
 	let isPublishing = false;
 
 	function validateInputs(tldr: string, para: string) {
-		const errors = {
+		const prompt = {
 			tldr: '',
 			para: ''
 		};
 
-		if (tldr.length > 140) {
-			errors.tldr = 'TLDR must be 140 characters or less';
+		if (tldr.length > 0) {
+			prompt.tldr = `( ${tldr.length} / 140 )`;
 		}
-		if (para.length > 560) {
-			errors.para = 'Paragraph must be 560 characters or less';
+		if (para.length > 0) {
+			prompt.para = `( ${para.length} / 560 )`;
 		}
 
-		return errors;
+		return prompt;
 	}
 
-	$: errors = validateInputs(tldr, para);
-	$: isValid = !errors.tldr && !errors.para;
+	$: prompt = validateInputs(tldr, para);
 
 	function publish(ndk: NDKSvelte) {
 		if (isPublishing) return;
@@ -55,10 +54,6 @@
 		let author = $currentUser;
 		if (!author) {
 			throw new Error('no current user');
-		}
-
-		if (!isValid) {
-			throw new Error('input is not valid');
 		}
 
 		let e = new NDKEvent(ndk);
@@ -105,7 +100,8 @@
 				<TextareaField
 					title="Title"
 					bind:value={tldr}
-					errorText={errors.tldr}
+					promptText={prompt.tldr}
+					maxlength={140}
 					options={{
 						placeholder: 'Enter a brief description (max 140 characters)',
 						style: 'height: 60px;'
@@ -114,7 +110,8 @@
 				<TextareaField
 					title="Description"
 					bind:value={para}
-					errorText={errors.para}
+					promptText={prompt.para}
+					maxlength={560}
 					options={{
 						placeholder: 'Enter a detailed description (max 560 characters)',
 						style: 'height: 180px;'
@@ -136,7 +133,7 @@
 				</RadioGroup.Root>
 				{#if $currentUser}
 					<Button
-						disabled={!tldr || !para || !isValid || isPublishing}
+						disabled={!tldr || !para || isPublishing}
 						on:click={() => publish($ndk)}
 						type="submit"
 					>
