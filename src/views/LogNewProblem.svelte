@@ -1,23 +1,24 @@
 <script lang="ts">
-	import { Button } from '@/components/ui/button';
-	import ScrollArea from '@/components/ui/scroll-area/scroll-area.svelte';
 	import { goto } from '$app/navigation';
 	import { base } from '$app/paths';
-	import * as Card from '@/components/ui/card';
-	import TextareaField from '../components/TextareaField.svelte';
-	import * as RadioGroup from '@/components/ui/radio-group';
-	import { currentUser } from '@/stores/session';
-	import Login from '../components/Login.svelte';
-	import { ndk } from '@/ndk';
-	import type NDKSvelte from '@nostr-dev-kit/ndk-svelte';
-	import { NDKEvent } from '@nostr-dev-kit/ndk';
-	import { sha256 } from 'js-sha256';
+	import { Button } from '@/components/ui/button';
 	import { Label } from '@/components/ui/label';
-	import { Carta, MarkdownEditor } from 'carta-md';
-	import LogNewProblemLayout from '../layouts/LogNewProblemLayout.svelte';
-	import 'carta-md/default.css';
-	import ProblemView from '../components/ProblemView.svelte';
+	import * as RadioGroup from '@/components/ui/radio-group';
+	import ScrollArea from '@/components/ui/scroll-area/scroll-area.svelte';
 	import { Problem } from '@/event_helpers/problems';
+	import { ndk } from '@/ndk';
+	import { currentUser } from '@/stores/session';
+	import { NDKEvent } from '@nostr-dev-kit/ndk';
+	import type NDKSvelte from '@nostr-dev-kit/ndk-svelte';
+	import { Carta, MarkdownEditor } from 'carta-md';
+	import 'carta-md/default.css';
+	import { sha256 } from 'js-sha256';
+	import Login from '../components/Login.svelte';
+	import ProblemView from '../components/ProblemView.svelte';
+	import TextareaField from '../components/TextareaField.svelte';
+	import LogNewProblemLayout from '../layouts/LogNewProblemLayout.svelte';
+
+	export let parent: Problem;
 
 	let tldr: string = '';
 	let para: string = '';
@@ -96,7 +97,8 @@
 	<div slot="editor">
 		<ScrollArea class="h-[calc(100vh-64px)]">
 			<div class="flex flex-col justify-start gap-2 p-4">
-				<div class="text-3xl font-bold">Log New problem</div>
+				You are currently logging new sub-problem under: {parent.tldr}
+				<div class="text-3xl font-bold">Log a new problem</div>
 				<TextareaField
 					title="Title"
 					bind:value={tldr}

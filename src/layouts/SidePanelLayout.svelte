@@ -12,6 +12,7 @@
 	import { bitcoinTip } from '@/stores/bitcoin';
 	import { AngleLeftSolid, AngleRightSolid } from 'svelte-awesome-icons';
 	import { goto } from '$app/navigation';
+	import { devmode } from '@/stores/session';
 
 	let open = false;
 	let expandSidebar = true;
@@ -86,7 +87,9 @@
 					</Sheet.Content>
 				</Sheet.Root>
 			</div>
-			<Button on:click={async () => await goto(`${base}/logNewProblem`)}>Log New Problem</Button>
+			{#if $devmode}
+				<Button on:click={async () => await goto(`${base}/new/problem/`)}>Log New Problem</Button>
+			{/if}
 			<div class="flex w-full flex-1 items-center justify-end gap-2">
 				<Badge class="flex h-9 max-w-16 shrink-0 items-center justify-center rounded-md"
 					>{$bitcoinTip.height}</Badge

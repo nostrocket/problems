@@ -9,6 +9,9 @@
 	import { Carta, CartaViewer } from 'carta-md';
 	import { ArrowBigLeft } from 'lucide-svelte';
 	import ProfileCard from './ProfileCard.svelte';
+	import { Button } from '@/components/ui/button';
+	import { goto } from '$app/navigation';
+	import { base } from '$app/paths';
 
 	export let problem: Problem;
 	export let preview: boolean = false;
@@ -18,6 +21,11 @@
 
 {#if problem}
 	<ScrollArea class="h-[calc(100vh-64px)]">
+		<div class="flex flex-col items-end p-4">
+			<Button on:click={async () => await goto(`${base}/new/problem/${problem.atag}`)}
+				>Log New Problem</Button
+			>
+		</div>
 		<div class="flex flex-col items-center p-4">
 			<h1 class="text-2xl font-semibold">{problem.tldr}</h1>
 			<p class="text-sm text-muted-foreground">
