@@ -68,6 +68,12 @@
 		if (page) {
 			e.tags.push(['page', page]);
 		}
+		if (parent) {
+			e.tags.push(['a', `31971:${parent.creator}:${parent.dtag}`, 'parent']);
+			e.tags.push(['status', parent.child_status]);
+		} else {
+			e.tags.push(['status', 'rfm']);
+		}
 		e.tags.push(['child_status', child_status]);
 		e.publish()
 			.then(async (x) => {
