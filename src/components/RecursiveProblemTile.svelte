@@ -26,7 +26,7 @@
 			//if (!expanded && !$isSelected) {expanded = true}
 			$selected = problem;
 		}}
-		class="problems-start flex w-full flex-col gap-2 rounded-lg border p-3 text-left text-sm transition-all hover:bg-accent hover:bg-opacity-100 {$isSelected
+		class="problems-start flex w-full cursor-zoom-in flex-col gap-2 rounded-lg border p-3 text-left text-sm transition-all hover:bg-accent hover:bg-opacity-100 {$isSelected
 			? 'bg-accent bg-opacity-90'
 			: ''}"
 	>

@@ -1,11 +1,10 @@
 <script lang="ts">
 	import { base } from '$app/paths';
 	import { page } from '$app/stores';
-	import { Badge } from '@/components/ui/badge';
 	import Separator from '@/components/ui/separator/separator.svelte';
-	import { currentUser, devmode } from '@/stores/session';
 	import { commitInfo } from '@/stores/github';
-	import { Code, Mail, Pyramid } from 'lucide-svelte';
+	import { devmode } from '@/stores/session';
+	import { Code, Pyramid } from 'lucide-svelte';
 	import { GitAltBrand } from 'svelte-awesome-icons';
 
 	export let closeSheet = () => {};
