@@ -1,8 +1,9 @@
 <script lang="ts">
+	import Card from '@/components/ui/card/card.svelte';
 	import type { Problem } from '@/event_helpers/problems';
 	import { formatTimeAgo } from '@/helpers';
 	import { bloom, problems, selected } from '@/stores/problems';
-	import { onMount } from 'svelte';
+	import { ChevronDown, ChevronRight } from 'svelte-radix';
 	import { derived } from 'svelte/store';
 	export let problem: Problem;
 
@@ -11,16 +12,21 @@
 			return p.parents().includes(problem.dtag);
 		});
 	});
+
+	let isSelected = derived(selected, ($selected) => {
+		return Boolean($selected == problem);
+	});
+
+	let expanded = false;
 </script>
 
 {#if problem}
-	<button
+	<Card
 		on:click={() => {
-			console.log(problem.event.rawEvent());
+			//if (!expanded && !$isSelected) {expanded = true}
 			$selected = problem;
 		}}
-		class="problems-start flex w-full flex-col gap-2 rounded-lg border p-3 text-left text-sm transition-all hover:bg-accent hover:bg-opacity-100 {$selected ==
-		problem
+		class="problems-start flex w-full flex-col gap-2 rounded-lg border p-3 text-left text-sm transition-all hover:bg-accent hover:bg-opacity-100 {$isSelected
 			? 'bg-accent bg-opacity-90'
 			: ''}"
 	>
@@ -41,17 +47,20 @@
 		<div class="line-clamp-2 text-xs text-muted-foreground">
 			{problem.page.substring(0, 300)}
 		</div>
-		<!-- {#if problem.labels.length}
-					<div class="flex problems-center gap-2">
-						{#each problem.labels as label}
-							<Badge variant={get_badge_variant_from_label(label)}>
-								{label}
-							</Badge>
-						{/each}
-					</div>
-				{/if} -->
-	</button>
-	{#if $selected == problem}
+		<div class="flex gap-2">
+			<div
+				class="flex cursor-pointer flex-row"
+				on:click={() => {
+					expanded = !expanded;
+				}}
+			>
+				{#if !expanded}<ChevronRight />{:else}<ChevronDown />{/if}<span
+					class="mb-auto mt-auto text-nowrap font-extralight">{$children.length} sub-problems</span
+				>
+			</div>
+		</div>
+	</Card>
+	{#if expanded}
 		{#each $children as child}
 			<div class="pl-2">
 				<svelte:self problem={child}></svelte:self>
