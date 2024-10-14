@@ -23,7 +23,7 @@
 		</div>
 	</form>
 	<ScrollArea class="h-[calc(100vh-154px)] px-4">
-		<div class="flex flex-col items-center gap-2">
+		<div class="flex flex-col">
 			{#each $filtered as problem}
 				<ProblemTile {problem}></ProblemTile>
 			{/each}
