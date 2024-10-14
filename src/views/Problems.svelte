@@ -7,7 +7,7 @@
 
 <Resizable.PaneGroup direction="horizontal" class="h-full items-stretch overflow-hidden">
 	<Resizable.Pane defaultSize={30} minSize={30} maxSize={50}>
-		<MailList></MailList>
+		<MailList />
 	</Resizable.Pane>
 
 	<Resizable.Handle withHandle />

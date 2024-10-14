@@ -1,15 +1,17 @@
 <script lang="ts">
 	import { Input } from '@/components/ui/input';
 	import ScrollArea from '@/components/ui/scroll-area/scroll-area.svelte';
-	import type { Problem } from '@/event_helpers/problems';
+	import { problems } from '@/stores/problems';
 	import { Search } from 'lucide-svelte';
 	import Filters from '../components/Filters.svelte';
 	import ProblemTile from '../components/RecursiveProblemTile.svelte';
-	import { problems } from '@/stores/problems';
-	import { onMount } from 'svelte';
-	// export let problems: Problem[];
-	let selected: Problem;
-	let bloom: false; //todo: use a bloom filter from HH for problems that current user has already viewed, this should run on problem event ID not d-tag so that they see updates
+	import { derived } from 'svelte/store';
+
+	let filtered = derived(problems, ($problems) => {
+		return $problems.filter((p) => {
+			return p.parents().length == 0;
+		});
+	});
 </script>
 
 <div class="flex flex-col gap-2">
@@ -22,7 +24,7 @@
 	</form>
 	<ScrollArea class="h-[calc(100vh-154px)] px-4">
 		<div class="flex flex-col items-center gap-2">
-			{#each $problems as problem}
+			{#each $filtered as problem}
 				<ProblemTile {problem}></ProblemTile>
 			{/each}
 		</div>

@@ -1,8 +1,16 @@
 <script lang="ts">
 	import type { Problem } from '@/event_helpers/problems';
 	import { formatTimeAgo } from '@/helpers';
-	import { bloom, selected } from '@/stores/problems';
+	import { bloom, problems, selected } from '@/stores/problems';
+	import { onMount } from 'svelte';
+	import { derived } from 'svelte/store';
 	export let problem: Problem;
+
+	let children = derived(problems, ($problems) => {
+		return $problems.filter((p) => {
+			return p.parents().includes(problem.dtag);
+		});
+	});
 </script>
 
 {#if problem}
@@ -11,7 +19,10 @@
 			console.log(problem.event.rawEvent());
 			$selected = problem;
 		}}
-		class="problems-start flex w-full flex-col gap-2 rounded-lg border p-3 text-left text-sm transition-all hover:bg-accent"
+		class="problems-start flex w-full flex-col gap-2 rounded-lg border p-3 text-left text-sm transition-all hover:bg-accent hover:bg-opacity-100 {$selected ==
+		problem
+			? 'bg-accent bg-opacity-90'
+			: ''}"
 	>
 		<div class="flex w-full flex-col gap-1">
 			<div class="problems-center flex">
@@ -40,4 +51,11 @@
 					</div>
 				{/if} -->
 	</button>
+	{#if $selected == problem}
+		{#each $children as child}
+			<div class="pl-2">
+				<svelte:self problem={child}></svelte:self>
+			</div>
+		{/each}
+	{/if}
 {/if}

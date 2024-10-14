@@ -16,6 +16,19 @@ export class Problem {
 		this.event = event;
 	}
 
+	parents(): string[] {
+		let p: string[] = [];
+		for (let t of this.event.getMatchingTags('a')) {
+			if (t.length == 3 && t[2] == 'parent') {
+				let s = t[1].split(':');
+				if (s.length == 3 && s[0] == '31971') {
+					p.push(s[2]);
+				}
+			}
+		}
+		return p;
+	}
+
 	static fromEvent(event: NDKEvent): Problem {
 		return new Problem(
 			event,

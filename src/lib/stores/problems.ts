@@ -10,4 +10,4 @@ export const problems = derived(_problems, ($problems) =>
 
 export let selected = writable<Problem | undefined>(undefined);
 
-export let bloom = writable(false); //todo
+export let bloom = writable(false); //todo: use a bloom filter from HH for problems that current user has already viewed, this should run on problem event ID not d-tag so that they see updates
