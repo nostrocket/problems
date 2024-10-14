@@ -13,7 +13,7 @@
 	import { goto } from '$app/navigation';
 	import { base } from '$app/paths';
 
-	export let problem: Problem;
+	export let problem: Problem | undefined;
 	export let preview: boolean = false;
 
 	const carta = new Carta();

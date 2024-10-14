@@ -1,33 +1,15 @@
 <script lang="ts">
-	import { Problem } from '@/event_helpers/problems';
-	import { ndk } from '@/ndk';
-	import { NDKEvent } from '@nostr-dev-kit/ndk';
-	import type { NDKEventStore } from '@nostr-dev-kit/ndk-svelte';
-	import { onDestroy } from 'svelte';
-	import { derived } from 'svelte/store';
-	import MailLayout from '../layouts/MailLayout.svelte';
-	import MailList from '../layouts/MailList.svelte';
+	import * as Resizable from '$lib/components/ui/resizable';
+	import { selected } from '@/stores/problems';
 	import ProblemView from '../components/ProblemView.svelte';
-	import { Badge } from '@/components/ui/badge';
-	import Filters from '../components/Filters.svelte';
-
-	let problems: NDKEventStore<NDKEvent> | undefined;
-	onDestroy(() => {
-		problems?.unsubscribe();
-	});
-
-	problems = $ndk.storeSubscribe([{ kinds: [31971 as number] }], { subId: 'rockets' });
-
-	const validProblems = derived(problems, ($problems) =>
-		$problems.map(Problem.fromEvent).filter((problem) => problem.isValid())
-	);
-
-	let selected: Problem;
+	import MailList from '../layouts/MailList.svelte';
 </script>
 
-<MailLayout>
-	<div slot="list">
-		<MailList items={$validProblems} bloom={false} bind:selected />
-	</div>
-	<div slot="problem"><ProblemView problem={selected} /></div>
-</MailLayout>
+<Resizable.PaneGroup direction="horizontal" class="h-full items-stretch overflow-hidden">
+	<Resizable.Pane defaultSize={30} minSize={30} maxSize={50}>
+		<MailList></MailList>
+	</Resizable.Pane>
+
+	<Resizable.Handle withHandle />
+	<Resizable.Pane maxSize={85}><ProblemView problem={$selected}></ProblemView></Resizable.Pane>
+</Resizable.PaneGroup>
