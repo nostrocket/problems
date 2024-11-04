@@ -1,6 +1,6 @@
 import { NDKEvent } from '@nostr-dev-kit/ndk';
 
-// https://github.com/nostrocket/NIPS/blob/main/Problems.md
+// NIP: https://github.com/nostrocket/NIPS/blob/main/Problems.md
 export class Problem {
 	public readonly event: NDKEvent;
 
